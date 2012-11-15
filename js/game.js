@@ -11,7 +11,7 @@ var main = function () {
 	var delta = now - then;
 
 	board.update(delta /1000);
-	renderer.render(board);
+	renderer.render(board, ctx);
 
 	then = now;
 };
