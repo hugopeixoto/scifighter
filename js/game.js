@@ -4,14 +4,14 @@ canvas.width = 832;
 canvas.height = 704;
 
 var board = new Board();
-var renderer = new Renderer(canvas);
+var renderer = new Renderer(ctx);
 
 var main = function () {
 	var now = Date.now();
 	var delta = now - then;
 
 	board.update(delta /1000);
-	renderer.render(board, ctx);
+	renderer.render(board);
 
 	then = now;
 };
