@@ -1,15 +1,17 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = 832;
+canvas.height = 704;
 
+var board = new Board();
+var renderer = new Renderer(canvas);
 
 var main = function () {
 	var now = Date.now();
 	var delta = now - then;
 
-	update(delta /1000);
-	render();
+	board.update(delta /1000);
+	renderer.render(board);
 
 	then = now;
 };
