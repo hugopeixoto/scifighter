@@ -13,12 +13,12 @@ var renderer = function(ctx)
 
 		drawBoard(board, ctx);
 
-		// Score
-		/*ctx.fillStyle = "rgb(250, 250, 250)";
+		// TEst text
+		ctx.fillStyle = "rgb(250, 250, 250)";
 		ctx.font = "24px Helvetica";
 		ctx.textAlign = "left";
 		ctx.textBaseline = "top";
-		ctx.fillText("Goblins caught: " + monstersCaught, 32, 32);*/
+		ctx.fillText("I HAZ ZE TEXT!!!1!!!");
 	};
 
 	this.drawBoard = function (board, ctx)
