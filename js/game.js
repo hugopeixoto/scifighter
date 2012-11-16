@@ -4,10 +4,10 @@ canvas.width = 832;
 canvas.height = 704;
 
 var scifighter = new SciFighter();
-loadLevel(scifighter.level);
 var renderer = new Renderer(canvas, ctx);
 
 scifighter.level.init(32, 32);
+loadLevel(scifighter.level);
 
 var Key = {
   _pressed: {},
@@ -99,8 +99,6 @@ function loadLevel(level) {
 		"....77.......3.............~....",
 		"....77.......#....~........~....",
 	];
-
-	level.init(level.width, level.height);
 
 	for(var i = 0; i < level.height; i++) {
 		for(var j = 0; j < level.width; j++) {
