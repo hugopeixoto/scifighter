@@ -31,6 +31,9 @@ var Key = {
   }
 };
 
+window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
+window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+
 var selectAction = function()
 {
 	if (Key.isDown(Key.DOWN)) {
@@ -55,6 +58,7 @@ var main = function () {
 	var delta = now - then;
 
 	scifighter.update(delta /1000, selectAction());
+	console.log("pressed: %i", selectAction());
 	renderer.render(scifighter);
 
 	then = now;
