@@ -97,6 +97,8 @@ function SciFighter () {
     {
         this.state = 1;
         this.foe = foe;
+        this.challenge = new Challenge(foe.type);
+        console.log(this.challenge.question); 
     }
 
     this.updateBattle = function (modifier, action) {
