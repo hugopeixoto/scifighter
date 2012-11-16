@@ -6,6 +6,8 @@ canvas.height = 704;
 var scifighter = new SciFighter();
 var renderer = new Renderer(canvas, ctx);
 
+scifighter.level.init(32, 32);
+
 var Key = {
   _pressed: {},
 
