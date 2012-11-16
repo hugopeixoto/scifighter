@@ -39,3 +39,12 @@ SciFighter.actions = {
   DOWN: 4
 }
 
+Cell.types = {
+    LAVA = 1,
+    WATER = 2,
+    WALL = 3,
+    GROUND_LAVA = 41,
+    GROUND_SWAMP = 42,
+    GROUND_STONE = 43
+}
+
