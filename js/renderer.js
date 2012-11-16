@@ -108,10 +108,34 @@ var Renderer = function(canvas, ctx)
 			break;
 		}
 
+		this.drawHPBar(this.canvas.width - 256 - 16, 208, scifighter.foe.hp, scifighter.foe.max_hp);
+
 		var playerSprite = this.spriteBatch["player"]["battle"];
 		if (playerSprite.image.ready) {
 			this.ctx.drawImage(playerSprite.image, 0, 1 * 64);
 		}
+
+		this.drawHPBar(16, 16, scifighter.level.player.hp, scifighter.level.player.max_hp);
+	}
+
+	this.drawHPBar = function(x, y, hp, max_hp)
+	{
+		var healthBarWidth = 256;
+		var healthBarHeight = 32;
+
+		this.ctx.strokeStyle = "rgb(0, 0, 0)";
+		this.ctx.lineWidth = 4;
+		this.ctx.strokeRect(x + 3, y + 3, healthBarWidth, healthBarHeight);
+
+		this.ctx.fillStyle = "rgb(0, 255, 0)";
+		this.ctx.fillRect(x, y, (hp/max_hp)*healthBarWidth, healthBarHeight);
+
+		this.ctx.fillStyle = "rgb(255, 0, 0)";
+		this.ctx.fillRect((hp/max_hp)*healthBarWidth, y, (1 - hp/max_hp)*healthBarWidth, healthBarHeight);
+
+		this.ctx.strokeStyle = "rgb(154, 154, 178)";
+		this.ctx.lineWidth = 4;
+		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
 	}
 
 	this.drawQuestion = function(scifighter)
