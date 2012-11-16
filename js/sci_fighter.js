@@ -2,7 +2,7 @@
 function Cell () {
     this.type = undefined;
     this.walkable = function () {
-        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE ].indexOf(this.type) >= 0;
+        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE, Cell.types.BRIDGE ].indexOf(this.type) >= 0;
     }
     this.objects = [];
 }
@@ -86,6 +86,7 @@ Cell.types = {
     WALL: 3,
     GROUND_LAVA: 41,
     GROUND_SWAMP: 42,
-    GROUND_STONE: 43
+    GROUND_STONE: 43,
+    BRIDGE: 44
 }
 
