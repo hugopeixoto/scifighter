@@ -4,7 +4,7 @@ canvas.width = 832;
 canvas.height = 704;
 
 var board = new Board();
-var renderer = new Renderer(ctx);
+var renderer = new Renderer(canvas, ctx);
 
 var Key = {
   _pressed: {},
