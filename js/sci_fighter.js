@@ -11,6 +11,8 @@ function Player () {
     this.x = 16;
     this.y = 31;
     this.orientation = Player.orientations.UP;
+    this.max_hp = 100;
+    this.hp = this.max_hp
 }
 
 function Bitcho (type, max_hp) {
@@ -68,7 +70,6 @@ function SciFighter () {
               y++;
               break;
         }
-
 
         if (action != undefined) {
             this.level.player.orientation = action;
