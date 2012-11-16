@@ -35,6 +35,7 @@ var Renderer = function(canvas, ctx)
 	this.spriteBatch[Cell.types.GROUND_STONE] = new Sprite("ground_stone.png"),
 	this.spriteBatch[Cell.types.GROUND_SWAMP] = new Sprite("ground_swamp.png"),
 	this.spriteBatch[Cell.types.GROUND_LAVA] = new Sprite("ground_lava.png"),
+	this.spriteBatch[Cell.types.BRIDGE] = new Sprite("bridge.png"),
 	this.spriteBatch["player"] = {}
     this.spriteBatch["player"][Player.orientations.UP] = new Sprite("joao/up.png");
     this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
