@@ -14,12 +14,21 @@ var Renderer = function(canvas, ctx)
 	this.canvas = canvas;
 	this.ctx = ctx;
 
+	this.stepRenderTime = 250;
+
 	var gridWidth = this.canvas.width / 64;
 	var gridHeight = this.canvas.height / 64;
 
+	this.fourFrameAnimationStep = 0;
+	this.now = Date.now();
+
 	this.spriteBatch = { }
 	this.spriteBatch[Cell.types.LAVA] = new Sprite("lava0.png");
-	this.spriteBatch[Cell.types.WATER] = new Sprite("water0.png"),
+	this.spriteBatch[Cell.types.WATER] = []
+	this.spriteBatch[Cell.types.WATER][0] = new Sprite("water/water0.png"),
+	this.spriteBatch[Cell.types.WATER][1] = new Sprite("water/water1.png"),
+	this.spriteBatch[Cell.types.WATER][2] = new Sprite("water/water2.png"),
+	this.spriteBatch[Cell.types.WATER][3] = new Sprite("water/water3.png"),
 	this.spriteBatch[Cell.types.WALL] = new Sprite("wall_side.png"),
 	this.spriteBatch[Cell.types.GROUND_STONE] = new Sprite("ground_stone.png"),
 	this.spriteBatch[Cell.types.GROUND_SWAMP] = new Sprite("ground_swamp.png"),
@@ -53,6 +62,22 @@ var Renderer = function(canvas, ctx)
 	{
 		var drawX = 0;
 		var drawY = 0;
+
+		var then = this.now;
+		this.now = Date.now();
+
+		this.stepRenderTime -= (this.now - then);
+		if(this.stepRenderTime <= 0)
+		{
+			this.fourFrameAnimationStep++;
+			if(this.fourFrameAnimationStep >= 4)
+			{
+				this.fourFrameAnimationStep = 0;
+			}
+			this.stepRenderTime = 250;
+		}
+
+
 		for(var i = scifighter.level.player.x - (gridWidth-1)/2; i <= scifighter.level.player.x + (gridWidth-1)/2; i++)
 		{
 			for(var j = scifighter.level.player.y - (gridHeight-1)/2; j <= scifighter.level.player.y + (gridHeight-1)/2; j++)
@@ -94,7 +119,17 @@ var Renderer = function(canvas, ctx)
 	this.spriteFromCell = function(grid, x, y)
 	{
 		var type = grid[y][x].type;
-		return this.spriteBatch[type];
+
+		switch(this.spriteBatch[type].length)
+		{
+			case 4:
+				return this.spriteBatch[type][this.fourFrameAnimationStep];
+			break;
+			default:
+			return this.spriteBatch[type];
+		}
+
+		//return this.spriteBatch[type];
 	}
 }
 
