@@ -99,7 +99,7 @@ function loadLevel(level) {
 		"....######.####..~~~+~~~~~~~~~+~",
 		".............#....~++++++++~++++",
 		"..................+++++++++~++++",
-		"..................+++++++++~++++",
+		"..................++++++++++++++",
 		".............#....~++++++++~++++",
 	];
 
@@ -133,6 +133,10 @@ function loadLevel(level) {
 		}
 	}
 
-    level.grid[2][2].objects.push(new Bitcho(2, 2, 2));
-    level.grid[6][2].objects.push(new Bitcho(2, 23, 50));
+    level.grid[2][2].objects.push(new Bitcho(2, 120));
+    level.grid[6][2].objects.push(new Bitcho(2, 120));
+    level.grid[26][12].objects.push(new Bitcho(2, 120));
+    level.grid[25][26].objects.push(new Bitcho(0, 100));
+    level.grid[15][28].objects.push(new Bitcho(0, 100));
+    level.grid[20][23].objects.push(new Bitcho(0, 100));
 }

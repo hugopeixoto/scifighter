@@ -51,10 +51,12 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
     this.spriteBatch["player"][Player.orientations.DOWN] = new Sprite("joao/down.png");
     this.spriteBatch["player"][Player.orientations.RIGHT] = new Sprite("joao/right.png");
+    this.spriteBatch["player"]["battle"] = new Sprite("joao/up_large.png");
     this.spriteBatch["bitcho"] = {};
     this.spriteBatch["bitcho"][0] = new Sprite("bitcho/green.png");
     this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
     this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
+    this.spriteBatch["bitcho"][3] = new Sprite("bitcho/red_large.png");
 
 	this.render = function (scifighter) {
 
@@ -76,11 +78,89 @@ var Renderer = function(canvas, ctx)
 	this.drawBattle = function(scifighter)
 	{
 		// Test text
-		this.ctx.fillStyle = "rgb(250, 250, 250)";
+		/*this.ctx.fillStyle = "rgb(250, 250, 250)";
 		this.ctx.font = "24px Helvetica";
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "top";
-		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);
+		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);*/
+
+		//Players and health
+		this.drawPlayersAndHealth(scifighter);
+
+		//Question
+		this.drawQuestion(scifighter);
+
+		//Answers
+		this.drawAnswers(scifighter);
+	}
+
+	this.drawPlayersAndHealth = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		this.ctx.fillRect(0, 0, this.canvas.width, 4 * 64);
+
+		switch(scifighter.foe.type)
+		{
+			case 2:
+				if(this.spriteBatch["bitcho"][3].image.ready) {
+					this.ctx.drawImage(this.spriteBatch["bitcho"][3].image, canvas.width - this.spriteBatch["bitcho"][3].image.width , 0);
+				}
+			break;
+		}
+
+		this.drawHPBar(this.canvas.width - 256 - 16, 208, scifighter.foe.hp, scifighter.foe.max_hp);
+
+		var playerSprite = this.spriteBatch["player"]["battle"];
+		if (playerSprite.image.ready) {
+			this.ctx.drawImage(playerSprite.image, 0, 1 * 64);
+		}
+
+		this.drawHPBar(16, 16, scifighter.level.player.hp, scifighter.level.player.max_hp);
+	}
+
+	this.drawHPBar = function(x, y, hp, max_hp)
+	{
+		var healthBarWidth = 256;
+		var healthBarHeight = 32;
+
+		hp *= 0.1; //TODO: TIRAR ISTO DAQUI!
+
+		this.ctx.strokeStyle = "rgb(0, 0, 0)";
+		this.ctx.lineWidth = 4;
+		this.ctx.strokeRect(x + 3, y + 3, healthBarWidth, healthBarHeight);
+
+		this.ctx.fillStyle = "#a9da8b";
+		this.ctx.fillRect(x, y, (hp/max_hp)*healthBarWidth, healthBarHeight);
+
+		this.ctx.fillStyle = "#d7958e";
+		this.ctx.fillRect(x+(hp/max_hp)*healthBarWidth, y, (1 - hp/max_hp)*healthBarWidth, healthBarHeight);
+
+		this.ctx.strokeStyle = "rgb(154, 154, 178)";
+		this.ctx.lineWidth = 4;
+		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
+
+		
+		this.ctx.fillStyle = "rgb(50, 50, 70)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "top";
+		this.ctx.fillText(hp + "/" + max_hp, x + 4, y + 4);
+
+		this.ctx.strokeStyle = "rgb(71, 71, 89)";
+		this.ctx.lineWidth = 1.5;
+		//this.ctx.strokeText(hp + "/" + max_hp, x + 4, y + healthBarHeight/2);
+	}
+
+	this.drawQuestion = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(203, 203, 164)";
+		this.ctx.fillRect(0, 4 * 64, this.canvas.width, 3 * 64);
+	}
+
+	this.drawAnswers = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(154, 154, 178)";
+		this.ctx.fillRect(0, 7 * 64, this.canvas.width, 4 * 64);
 	}
 
 	this.drawLevel = function (scifighter)
