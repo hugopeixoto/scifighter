@@ -23,7 +23,9 @@ var Renderer = function(canvas, ctx)
 	this.now = Date.now();
 
 	this.spriteBatch = { }
-	this.spriteBatch[Cell.types.LAVA] = new Sprite("lava0.png");
+	this.spriteBatch[Cell.types.LAVA] = []
+	this.spriteBatch[Cell.types.LAVA][0] = new Sprite("lava/lava0.png");
+	this.spriteBatch[Cell.types.LAVA][1] = new Sprite("lava/lava1.png");
 	this.spriteBatch[Cell.types.WATER] = []
 	this.spriteBatch[Cell.types.WATER][0] = new Sprite("water/water0.png"),
 	this.spriteBatch[Cell.types.WATER][1] = new Sprite("water/water1.png"),
@@ -125,6 +127,8 @@ var Renderer = function(canvas, ctx)
 			case 4:
 				return this.spriteBatch[type][this.fourFrameAnimationStep];
 			break;
+			case 2:
+				return this.spriteBatch[type][Math.floor(this.fourFrameAnimationStep/2)];
 			default:
 			return this.spriteBatch[type];
 		}
