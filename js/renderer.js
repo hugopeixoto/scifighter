@@ -51,6 +51,10 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
     this.spriteBatch["player"][Player.orientations.DOWN] = new Sprite("joao/down.png");
     this.spriteBatch["player"][Player.orientations.RIGHT] = new Sprite("joao/right.png");
+    this.spriteBatch["bitcho"] = {};
+    this.spriteBatch["bitcho"][0] = new Sprite("bitcho/green.png");
+    this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
+    this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
 
 	this.render = function (scifighter) {
 
@@ -147,6 +151,10 @@ var Renderer = function(canvas, ctx)
 						this.drawPlayer(scifighter.level.player, drawX, drawY);
 					}
 
+                    for (var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
+                        this.drawObject(scifighter.level.grid[j][i].objects[k], drawX, drawY);    
+                    }
+
 				}
 				else
 				{
@@ -166,6 +174,14 @@ var Renderer = function(canvas, ctx)
 			this.ctx.drawImage(playerSprite.image, x, y);
 		}
 	}
+
+    this.drawObject = function (object, x, y)
+    {
+        var sprite = this.spriteBatch["bitcho"][object.type];
+        if (sprite.image.ready) {
+            this.ctx.drawImage(sprite.image, x, y);
+        }
+    }
 
 	this.spriteFromCell = function(grid, x, y)
 	{

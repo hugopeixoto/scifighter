@@ -132,4 +132,7 @@ function loadLevel(level) {
 			}
 		}
 	}
+
+    level.grid[2][2].objects.push(new Bitcho(2, 2, 2));
+    level.grid[6][2].objects.push(new Bitcho(2, 23, 50));
 }

@@ -13,6 +13,12 @@ function Player () {
     this.orientation = Player.orientations.UP;
 }
 
+function Bitcho (type, x, y) {
+    this.type = type;
+    this.x = x;
+    this.y = y;
+}
+
 function Level () {
     this.init = function (width, height) {
         this.width = width;
@@ -36,10 +42,16 @@ function Level () {
 
 function SciFighter () {
     this.level = new Level();
+    this.state = 0;
+
     this.last_action = 100;
 
     this.update = function (modifier, action) {
+        if (this.state == 0) this.updateBoard(modifier, action);
+        if (this.state == 1) this.updateBattle(modifier, action);
+    }
 
+    this.updateBoard = function (modifier, action) {
         var x = this.level.player.x;
         var y = this.level.player.y;
         switch (action) {
@@ -67,7 +79,28 @@ function SciFighter () {
             this.level.player.x = x;
             this.level.player.y = y;
             this.last_action = 150;
+
+            var d = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            for (var i = 0; i < 4; i++) {
+                var vx = x + d[i][0];
+                var vy = y + d[i][1];
+
+                if (this.level.withinBounds(vx, vy) && this.level.grid[vy][vx].objects.length > 0) {
+                    var edgar_alan_foe = this.level.grid[vy][vx].objects.pop();
+                    this.startBattleWith(edgar_alan_foe);
+                }
+            }
         }
+    }
+
+    this.startBattleWith = function (foe)
+    {
+        this.state = 1;
+        this.foe = foe;
+    }
+
+    this.updateBattle = function (modifier, action) {
+        // console.log("pokemon");
     }
 }
 
