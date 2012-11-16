@@ -7,6 +7,8 @@ var scifighter = new SciFighter();
 loadLevel(scifighter.level);
 var renderer = new Renderer(canvas, ctx);
 
+scifighter.level.init(32, 32);
+
 var Key = {
   _pressed: {},
 
@@ -61,8 +63,6 @@ var main = function () {
 
 var then = Date.now();
 setInterval(main, 1);
-//setInterval(main, (1000/60));
-
 
 function loadLevel(level) {
 	var levelGrid = [
