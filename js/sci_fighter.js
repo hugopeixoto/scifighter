@@ -13,10 +13,10 @@ function Player () {
     this.orientation = Player.orientations.UP;
 }
 
-function Bitcho (type, x, y) {
+function Bitcho (type, max_hp) {
     this.type = type;
-    this.x = x;
-    this.y = y;
+    this.max_hp = max_hp;
+    this.hp = max_hp;
 }
 
 function Level () {
