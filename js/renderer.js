@@ -13,7 +13,7 @@ var renderer = function(ctx)
 
 		drawBoard(board, ctx);
 
-		// TEst text
+		// Test text
 		ctx.fillStyle = "rgb(250, 250, 250)";
 		ctx.font = "24px Helvetica";
 		ctx.textAlign = "left";

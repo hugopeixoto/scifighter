@@ -30,19 +30,19 @@ var Key = {
 
 var selectAction = function()
 {
-	if (Key.isDown(Key.DOWN)) { // Player holding down
+	if (Key.isDown(Key.DOWN)) {
 		return Board.DOWN;
 	}
-	if (Key.isDown(Key.UP)) { // Player holding down
+	if (Key.isDown(Key.UP)) {
 		return Board.UP;
 	}
-	if (Key.isDown(Key.LEFT)) { // Player holding down
+	if (Key.isDown(Key.LEFT)) {
 		return Board.LEFT;
 	}
-	if (Key.isDown(Key.RIGHT)) { // Player holding down
+	if (Key.isDown(Key.RIGHT)) {
 		return Board.RIGHT;
 	}
-	if (Key.isDown(Key.ENTER)) { // Player holding down
+	if (Key.isDown(Key.ENTER)) {
 		return Board.ENTER;
 	}
 }
