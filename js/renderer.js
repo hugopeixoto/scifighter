@@ -138,13 +138,10 @@ var Renderer = function(canvas, ctx)
 
         switch (type) {
             case Cell.types.WALL:
-                if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type != Cell.types.WALL && 
-                	(!scifighter.level.withinBounds(x, y-1) || grid[y-1][x].type != Cell.types.WALL || 
-                		(scifighter.level.withinBounds(x, y-1) && grid[y-1][x].type == Cell.types.WALL && 
-                		scifighter.level.withinBounds(x-1, y) && grid[y][x-1].type == Cell.types.WALL && 
-                		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL)))
+                if(scifighter.level.withinBounds(x, y+1) && scifighter.level.withinBounds(x, y-1) &&
+                	grid[y+1][x].type == Cell.types.WALL && grid[y-1][x].type == Cell.types.WALL)
                 {
-                	return this.spriteBatch[type][0]; //wall_bottom
+                	return this.spriteBatch[type][1]; //wall_bottom
                 }
                 else if(scifighter.level.withinBounds(x, y-1) && grid[y-1][x].type == Cell.types.WALL &&
                 		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL &&
@@ -174,15 +171,16 @@ var Renderer = function(canvas, ctx)
                 {
                 	return this.spriteBatch[type][5]; //wall_bottom_right
                 }
-                else if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type == Cell.types.WALL &&
+                else if((scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type == Cell.types.WALL &&
                 		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL &&
-                		scifighter.level.withinBounds(x-1, y) && grid[y][x+1].type == Cell.types.WALL)
+                		scifighter.level.withinBounds(x-1, y) && grid[y][x+1].type == Cell.types.WALL) ||
+                		(!scifighter.level.withinBounds(x, y+1) || grid[y+1][x].type == Cell.types.WALL))
                 {
                 	return this.spriteBatch[type][6]; //wall_top_half
                 }
                 else
                 {
-                	return this.spriteBatch[type][1]; //wall side
+                	return this.spriteBatch[type][0]; //wall side
                 }
                 break;
             case Cell.types.BRIDGE:
