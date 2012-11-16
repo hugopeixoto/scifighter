@@ -5,11 +5,17 @@ function Cell () {
     this.objects = [];
 }
 
+function Player () {
+    this.x = 16;
+    this.y = 0;
+}
+
 function Level () {
     this.width = 32;
     this.height = 32;
     
     this.grid = [];
+    this.player = new Player();
 
     for (var i = 0; i < this.width; i++) {
         this.grid[i] = [];
@@ -18,6 +24,7 @@ function Level () {
         }
     }
 }
+
 
 function SciFighter () {
     this.level = new Level();
