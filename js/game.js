@@ -31,19 +31,19 @@ var Key = {
 var selectAction = function()
 {
 	if (Key.isDown(Key.DOWN)) {
-		return Board.DOWN;
+		return Board.actions.DOWN;
 	}
 	if (Key.isDown(Key.UP)) {
-		return Board.UP;
+		return Board.actions.UP;
 	}
 	if (Key.isDown(Key.LEFT)) {
-		return Board.LEFT;
+		return Board.actions.LEFT;
 	}
 	if (Key.isDown(Key.RIGHT)) {
-		return Board.RIGHT;
+		return Board.actions.RIGHT;
 	}
 	if (Key.isDown(Key.ENTER)) {
-		return Board.ENTER;
+		return Board.actions.ENTER;
 	}
 }
 
