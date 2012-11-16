@@ -10,7 +10,7 @@ function Cell () {
 function Player () {
     this.x = 16;
     this.y = 31;
-    this.orientation = Player.orientations.NORTH;
+    this.orientation = Player.orientations.UP;
 }
 
 function Level () {
@@ -36,10 +36,9 @@ function Level () {
 
 function SciFighter () {
     this.level = new Level();
-    this.last_action = 150;
+    this.last_action = 100;
 
     this.update = function (modifier, action) {
-        this.level.player.orientation = action;
 
         var x = this.level.player.x;
         var y = this.level.player.y;
@@ -56,6 +55,11 @@ function SciFighter () {
             case SciFighter.actions.DOWN:
               y++;
               break;
+        }
+
+
+        if (action != undefined) {
+            this.level.player.orientation = action;
         }
 
         this.last_action -= modifier * 1000;

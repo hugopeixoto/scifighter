@@ -24,7 +24,11 @@ var Renderer = function(canvas, ctx)
 	this.spriteBatch[Cell.types.GROUND_STONE] = new Sprite("ground_stone.png"),
 	this.spriteBatch[Cell.types.GROUND_SWAMP] = new Sprite("ground_swamp.png"),
 	this.spriteBatch[Cell.types.GROUND_LAVA] = new Sprite("ground_lava.png"),
-	this.spriteBatch["player"] = new Sprite("joao.png")
+	this.spriteBatch["player"] = {}
+    this.spriteBatch["player"][Player.orientations.UP] = new Sprite("joao/up.png");
+    this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
+    this.spriteBatch["player"][Player.orientations.DOWN] = new Sprite("joao/down.png");
+    this.spriteBatch["player"][Player.orientations.RIGHT] = new Sprite("joao/right.png");
 
 	this.render = function (scifighter) {
 		/*if (bgReady) {
@@ -38,11 +42,11 @@ var Renderer = function(canvas, ctx)
 		this.drawLevel(scifighter);
 
 		// Test text
-		this.ctx.fillStyle = "rgb(250, 250, 250)";
-		this.ctx.font = "24px Helvetica";
-		this.ctx.textAlign = "left";
-		this.ctx.textBaseline = "top";
-		this.ctx.fillText("I HAZ ZE TEXT!!!1!!!", canvas.width/2-100, canvas.width/2-50);
+		//this.ctx.fillStyle = "rgb(250, 250, 250)";
+		//this.ctx.font = "24px Helvetica";
+		//this.ctx.textAlign = "left";
+		//this.ctx.textBaseline = "top";
+		//this.ctx.fillText("I HAZ ZE TEXT!!!1!!!", canvas.width/2-100, canvas.width/2-50);
 	};
 
 	this.drawLevel = function (scifighter)
@@ -64,7 +68,7 @@ var Renderer = function(canvas, ctx)
 
 					if(i == scifighter.level.player.x && j == scifighter.level.player.y)
 					{
-						this.drawPlayer(drawX, drawY);
+						this.drawPlayer(scifighter.level.player, drawX, drawY);
 					}
 
 				}
@@ -79,9 +83,9 @@ var Renderer = function(canvas, ctx)
 		}
 	}
 
-	this.drawPlayer = function(x, y)
+	this.drawPlayer = function(player, x, y)
 	{
-		var playerSprite = this.spriteBatch["player"];
+		var playerSprite = this.spriteBatch["player"][player.orientation];
 		if (playerSprite.image.ready) {
 			this.ctx.drawImage(playerSprite.image, x, y);
 		}
