@@ -35,7 +35,10 @@ var Renderer = function(canvas, ctx)
 	this.spriteBatch[Cell.types.GROUND_STONE] = new Sprite("ground_stone.png"),
 	this.spriteBatch[Cell.types.GROUND_SWAMP] = new Sprite("ground_swamp.png"),
 	this.spriteBatch[Cell.types.GROUND_LAVA] = new Sprite("ground_lava.png"),
-	this.spriteBatch[Cell.types.BRIDGE] = new Sprite("bridge.png"),
+	this.spriteBatch[Cell.types.BRIDGE] = {};
+	this.spriteBatch[Cell.types.BRIDGE]["middle"] = new Sprite("bridge/middle.png"),
+	this.spriteBatch[Cell.types.BRIDGE]["left"] = new Sprite("bridge/left.png"),
+	this.spriteBatch[Cell.types.BRIDGE]["right"] = new Sprite("bridge/right.png"),
 	this.spriteBatch["player"] = {}
     this.spriteBatch["player"][Player.orientations.UP] = new Sprite("joao/up.png");
     this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
@@ -123,16 +126,22 @@ var Renderer = function(canvas, ctx)
 	{
 		var type = grid[y][x].type;
 
-		switch(this.spriteBatch[type].length)
-		{
-			case 4:
-				return this.spriteBatch[type][this.fourFrameAnimationStep];
-			break;
-			case 2:
-				return this.spriteBatch[type][Math.floor(this.fourFrameAnimationStep/2)];
-			default:
-			return this.spriteBatch[type];
-		}
+        switch (type) {
+            case Cell.types.WALL:
+                return this.spriteBatch[type];
+                break;
+            case Cell.types.BRIDGE:
+                var herp = "middle";
+                if (grid[y][x - 1].type != Cell.types.BRIDGE) herp = "left";
+                if (grid[y][x + 1].type != Cell.types.BRIDGE) herp = "right";
+                return this.spriteBatch[type][herp];
+            case Cell.types.WATER:
+                return this.spriteBatch[type][this.fourFrameAnimationStep];
+            case Cell.types.LAVA:
+                return this.spriteBatch[type][Math.floor(this.fourFrameAnimationStep/2)];
+            default:
+                return this.spriteBatch[type];
+        }
 
 		//return this.spriteBatch[type];
 	}
