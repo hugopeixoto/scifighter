@@ -7,7 +7,7 @@ function Cell () {
 
 function Player () {
     this.x = 16;
-    this.y = 0;
+    this.y = 31;
 }
 
 function Level () {
