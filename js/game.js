@@ -58,7 +58,6 @@ var main = function () {
 	var delta = now - then;
 
 	scifighter.update(delta /1000, selectAction());
-	console.log("pressed: %i", selectAction());
 	renderer.render(scifighter);
 
 	then = now;
