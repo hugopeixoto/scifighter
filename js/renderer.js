@@ -51,10 +51,12 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["player"][Player.orientations.LEFT] = new Sprite("joao/left.png");
     this.spriteBatch["player"][Player.orientations.DOWN] = new Sprite("joao/down.png");
     this.spriteBatch["player"][Player.orientations.RIGHT] = new Sprite("joao/right.png");
+    this.spriteBatch["player"]["battle"] = new Sprite("joao/up_large.png");
     this.spriteBatch["bitcho"] = {};
     this.spriteBatch["bitcho"][0] = new Sprite("bitcho/green.png");
     this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
     this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
+    this.spriteBatch["bitcho"][3] = new Sprite("bitcho/red_large.png");
 
 	this.render = function (scifighter) {
 
@@ -76,11 +78,52 @@ var Renderer = function(canvas, ctx)
 	this.drawBattle = function(scifighter)
 	{
 		// Test text
-		this.ctx.fillStyle = "rgb(250, 250, 250)";
+		/*this.ctx.fillStyle = "rgb(250, 250, 250)";
 		this.ctx.font = "24px Helvetica";
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "top";
-		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);
+		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);*/
+
+		//Players and health
+		this.drawPlayersAndHealth(scifighter);
+
+		//Question
+		this.drawQuestion(scifighter);
+
+		//Answers
+		this.drawAnswers(scifighter);
+	}
+
+	this.drawPlayersAndHealth = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		this.ctx.fillRect(0, 0, this.canvas.width, 4 * 64);
+
+		switch(scifighter.foe.type)
+		{
+			case 2:
+				if(this.spriteBatch["bitcho"][3].image.ready) {
+					this.ctx.drawImage(this.spriteBatch["bitcho"][3].image, canvas.width - this.spriteBatch["bitcho"][3].image.width , 0);
+				}
+			break;
+		}
+
+		var playerSprite = this.spriteBatch["player"]["battle"];
+		if (playerSprite.image.ready) {
+			this.ctx.drawImage(playerSprite.image, 0, 1 * 64);
+		}
+	}
+
+	this.drawQuestion = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(203, 203, 164)";
+		this.ctx.fillRect(0, 4 * 64, this.canvas.width, 3 * 64);
+	}
+
+	this.drawAnswers = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(154, 154, 178)";
+		this.ctx.fillRect(0, 7 * 64, this.canvas.width, 4 * 64);
 	}
 
 	this.drawLevel = function (scifighter)
