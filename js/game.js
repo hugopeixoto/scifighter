@@ -127,8 +127,8 @@ function loadLevel(level) {
 				case "=": //water
 					level.grid[i][j].type = Cell.types.BRIDGE;
 					break;
-				default:
-					level.grid[i][j].type = Cell.types.LAVA;
+				//default:
+				//	level.grid[i][j].type = Cell.types.LAVA;
 			}
 		}
 	}
