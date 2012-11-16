@@ -72,11 +72,38 @@ var Renderer = function(canvas, ctx)
 	this.drawBattle = function(scifighter)
 	{
 		// Test text
-		this.ctx.fillStyle = "rgb(250, 250, 250)";
+		/*this.ctx.fillStyle = "rgb(250, 250, 250)";
 		this.ctx.font = "24px Helvetica";
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "top";
-		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);
+		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);*/
+
+		//Players and health
+		this.drawPlayersAndHealth(scifighter);
+
+		//Question
+		this.drawQuestion(scifighter);
+
+		//Answers
+		this.drawAnswers(scifighter);
+	}
+
+	this.drawPlayersAndHealth = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		this.ctx.fillRect(0, 0, this.canvas.width, 4 * 64);
+	}
+
+	this.drawQuestion = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(203, 203, 164)";
+		this.ctx.fillRect(0, 4 * 64, this.canvas.width, 3 * 64);
+	}
+
+	this.drawAnswers = function(scifighter)
+	{
+		this.ctx.fillStyle = "rgb(154, 154, 178)";
+		this.ctx.fillRect(0, 7 * 64, this.canvas.width, 4 * 64);
 	}
 
 	this.drawLevel = function (scifighter)
