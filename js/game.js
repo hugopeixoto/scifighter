@@ -51,7 +51,7 @@ var main = function () {
 	var now = Date.now();
 	var delta = now - then;
 
-	SciFighter.update(delta /1000, selectAction());
+	scifighter.update(delta /1000, selectAction());
 	renderer.render(scifighter);
 
 	then = now;
