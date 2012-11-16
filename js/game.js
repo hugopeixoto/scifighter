@@ -109,10 +109,10 @@ function loadLevel(level) {
 				case "@": // lava
 					level.grid[i][j].type = Cell.types.LAVA;
 					break;
-				case ".": //wall
+				case "#": //wall
 					level.grid[i][j].type = Cell.types.WALL;
 					break;
-				case "#": //floor
+				case ".": //floor
 					level.grid[i][j].type = Cell.types.GROUND_STONE;
 					break;
 				case ",": //floor lava
