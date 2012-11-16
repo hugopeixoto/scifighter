@@ -1,6 +1,7 @@
-var renderer = function(ctx)
+var Renderer = function(canvas, ctx)
 {
 	this.ctx = ctx;
+	this.canvas = canvas;
 
 	this.render = function (board, ctx) {
 		/*if (bgReady) {
