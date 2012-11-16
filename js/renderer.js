@@ -123,19 +123,32 @@ var Renderer = function(canvas, ctx)
 		var healthBarWidth = 256;
 		var healthBarHeight = 32;
 
+		hp *= 0.1; //TODO: TIRAR ISTO DAQUI!
+
 		this.ctx.strokeStyle = "rgb(0, 0, 0)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x + 3, y + 3, healthBarWidth, healthBarHeight);
 
-		this.ctx.fillStyle = "rgb(0, 255, 0)";
+		this.ctx.fillStyle = "#a9da8b";
 		this.ctx.fillRect(x, y, (hp/max_hp)*healthBarWidth, healthBarHeight);
 
-		this.ctx.fillStyle = "rgb(255, 0, 0)";
-		this.ctx.fillRect((hp/max_hp)*healthBarWidth, y, (1 - hp/max_hp)*healthBarWidth, healthBarHeight);
+		this.ctx.fillStyle = "#d7958e";
+		this.ctx.fillRect(x+(hp/max_hp)*healthBarWidth, y, (1 - hp/max_hp)*healthBarWidth, healthBarHeight);
 
 		this.ctx.strokeStyle = "rgb(154, 154, 178)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
+
+		
+		this.ctx.fillStyle = "rgb(50, 50, 70)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "top";
+		this.ctx.fillText(hp + "/" + max_hp, x + 4, y + 4);
+
+		this.ctx.strokeStyle = "rgb(71, 71, 89)";
+		this.ctx.lineWidth = 1.5;
+		//this.ctx.strokeText(hp + "/" + max_hp, x + 4, y + healthBarHeight/2);
 	}
 
 	this.drawQuestion = function(scifighter)
