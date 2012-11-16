@@ -49,9 +49,9 @@ var Renderer = function(canvas, ctx)
 	{
 		var drawX = 0;
 		var drawY = 0;
-		for(var i = scifighter.level.player.x - (gridWidth-1)/2; i < scifighter.level.player.x + (gridWidth-1)/2; i++)
+		for(var i = scifighter.level.player.x - (gridWidth-1)/2; i <= scifighter.level.player.x + (gridWidth-1)/2; i++)
 		{
-			for(var j = scifighter.level.player.y - (gridHeight-1)/2; j < scifighter.level.player.y + (gridHeight-1)/2; j++)
+			for(var j = scifighter.level.player.y - (gridHeight-1)/2; j <= scifighter.level.player.y + (gridHeight-1)/2; j++)
 			{
 				if(i >= 0 && i < scifighter.level.grid.length && j >= 0 && j < scifighter.level.grid[0].length)
 				{
