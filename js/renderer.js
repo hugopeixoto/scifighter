@@ -31,7 +31,14 @@ var Renderer = function(canvas, ctx)
 	this.spriteBatch[Cell.types.WATER][1] = new Sprite("water/water1.png"),
 	this.spriteBatch[Cell.types.WATER][2] = new Sprite("water/water2.png"),
 	this.spriteBatch[Cell.types.WATER][3] = new Sprite("water/water3.png"),
-	this.spriteBatch[Cell.types.WALL] = new Sprite("wall_side.png"),
+	this.spriteBatch[Cell.types.WALL] = []
+	this.spriteBatch[Cell.types.WALL][0] = new Sprite("wall/wall_bottom.png"),
+	this.spriteBatch[Cell.types.WALL][1] = new Sprite("wall/wall_side.png"),
+	this.spriteBatch[Cell.types.WALL][2] = new Sprite("wall/wall_bottom_left.png"),
+	this.spriteBatch[Cell.types.WALL][3] = new Sprite("wall/wall_top_left.png"),
+	this.spriteBatch[Cell.types.WALL][4] = new Sprite("wall/wall_top_right.png"),
+	this.spriteBatch[Cell.types.WALL][5] = new Sprite("wall/wall_bottom_right.png"),
+	this.spriteBatch[Cell.types.WALL][6] = new Sprite("wall/wall_top_half.png"),
 	this.spriteBatch[Cell.types.GROUND_STONE] = new Sprite("ground_stone.png"),
 	this.spriteBatch[Cell.types.GROUND_SWAMP] = new Sprite("ground_swamp.png"),
 	this.spriteBatch[Cell.types.GROUND_LAVA] = new Sprite("ground_lava.png"),
@@ -97,7 +104,10 @@ var Renderer = function(canvas, ctx)
 					var sprite = this.spriteFromCell(scifighter.level.grid, i, j);
 
 					if(sprite.image.ready) {
-						this.ctx.drawImage(sprite.image, drawX, drawY);
+						if(sprite.image.height == 128)
+							this.ctx.drawImage(sprite.image, drawX, drawY - 64);
+						else
+							this.ctx.drawImage(sprite.image, drawX, drawY);
 
 					}
 
@@ -144,7 +154,52 @@ var Renderer = function(canvas, ctx)
 
         switch (type) {
             case Cell.types.WALL:
-                return this.spriteBatch[type];
+                if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type != Cell.types.WALL && 
+                	(!scifighter.level.withinBounds(x, y-1) || grid[y-1][x].type != Cell.types.WALL || 
+                		(scifighter.level.withinBounds(x, y-1) && grid[y-1][x].type == Cell.types.WALL && 
+                		scifighter.level.withinBounds(x-1, y) && grid[y][x-1].type == Cell.types.WALL && 
+                		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL)))
+                {
+                	return this.spriteBatch[type][0]; //wall_bottom
+                }
+                else if(scifighter.level.withinBounds(x, y-1) && grid[y-1][x].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL &&
+                		(!scifighter.level.withinBounds(x-1, y) || grid[y][x-1].type != Cell.types.WALL) &&
+                		(!scifighter.level.withinBounds(x, y+1) || grid[y+1][x].type != Cell.types.WALL))
+                {
+                	return this.spriteBatch[type][2]; //wall_bottom_left
+                }
+                else if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL &&
+                		(!scifighter.level.withinBounds(x-1, y) || grid[y][x-1].type != Cell.types.WALL) &&
+                		(!scifighter.level.withinBounds(x, y-1) || grid[y-1][x].type != Cell.types.WALL))
+                {
+                	return this.spriteBatch[type][3]; //wall_top_left
+                }
+                else if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x-1, y) && grid[y][x-1].type == Cell.types.WALL &&
+                		(!scifighter.level.withinBounds(x+1, y) || grid[y][x+1].type != Cell.types.WALL) &&
+                		(!scifighter.level.withinBounds(x, y-1) || grid[y-1][x].type != Cell.types.WALL))
+                {
+                	return this.spriteBatch[type][4]; //wall_top_right
+                }
+                else if(scifighter.level.withinBounds(x, y-1) && grid[y-1][x].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x-1, y) && grid[y][x-1].type == Cell.types.WALL &&
+                		(!scifighter.level.withinBounds(x+1, y) || grid[y][x+1].type != Cell.types.WALL) &&
+                		(!scifighter.level.withinBounds(x, y+1) || grid[y+1][x].type != Cell.types.WALL))
+                {
+                	return this.spriteBatch[type][5]; //wall_bottom_right
+                }
+                else if(scifighter.level.withinBounds(x, y+1) && grid[y+1][x].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x+1, y) && grid[y][x+1].type == Cell.types.WALL &&
+                		scifighter.level.withinBounds(x-1, y) && grid[y][x+1].type == Cell.types.WALL)
+                {
+                	return this.spriteBatch[type][6]; //wall_top_half
+                }
+                else
+                {
+                	return this.spriteBatch[type][1]; //wall side
+                }
                 break;
             case Cell.types.BRIDGE:
                 var herp = "middle";
