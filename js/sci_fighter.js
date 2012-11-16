@@ -86,14 +86,21 @@ function SciFighter () {
                 var vy = y + d[i][1];
 
                 if (this.level.withinBounds(vx, vy) && this.level.grid[vy][vx].objects.length > 0) {
-                    this.state = 1;
+                    var edgar_alan_foe = this.level.grid[vy][vx].objects.pop();
+                    this.startBattleWith(edgar_alan_foe);
                 }
             }
         }
     }
 
+    this.startBattleWith = function (foe)
+    {
+        this.state = 1;
+        this.foe = foe;
+    }
+
     this.updateBattle = function (modifier, action) {
-        console.log("pokemon");
+        // console.log("pokemon");
     }
 }
 
