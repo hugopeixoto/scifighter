@@ -22,6 +22,8 @@ var Renderer = function(canvas, ctx)
 	this.fourFrameAnimationStep = 0;
 	this.now = Date.now();
 
+
+
 	this.spriteBatch = { }
 	this.spriteBatch[Cell.types.LAVA] = []
 	this.spriteBatch[Cell.types.LAVA][0] = new Sprite("lava/lava0.png");
@@ -80,21 +82,9 @@ var Renderer = function(canvas, ctx)
 
 	this.drawBattle = function(scifighter)
 	{
-		// Test text
-		/*this.ctx.fillStyle = "rgb(250, 250, 250)";
-		this.ctx.font = "24px Helvetica";
-		this.ctx.textAlign = "left";
-		this.ctx.textBaseline = "top";
-		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);*/
-
-		//Players and health
 		this.drawPlayersAndHealth(scifighter);
 
-		//Question
 		this.drawQuestion(scifighter);
-
-		//Answers
-		this.drawAnswers(scifighter);
 	}
 
 	this.drawPlayersAndHealth = function(scifighter)
@@ -149,8 +139,8 @@ var Renderer = function(canvas, ctx)
 		this.ctx.textBaseline = "top";
 		this.ctx.fillText(hp + "/" + max_hp, x + 4, y + 4);
 
-		this.ctx.strokeStyle = "rgb(71, 71, 89)";
-		this.ctx.lineWidth = 1.5;
+		//this.ctx.strokeStyle = "rgb(71, 71, 89)";
+		//this.ctx.lineWidth = 1.5;
 		//this.ctx.strokeText(hp + "/" + max_hp, x + 4, y + healthBarHeight/2);
 	}
 
@@ -158,12 +148,78 @@ var Renderer = function(canvas, ctx)
 	{
 		this.ctx.fillStyle = "rgb(203, 203, 164)";
 		this.ctx.fillRect(0, 4 * 64, this.canvas.width, 3 * 64);
-	}
 
-	this.drawAnswers = function(scifighter)
-	{
+		this.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "top";
+
+		this.ctx.strokeStyle = "rgb(50, 50, 70)";
+		this.ctx.lineWidth = 6;
+		this.ctx.strokeRect(0 + 3, 4 * 64 + 3, this.canvas.width - 6, 3 * 64 - 6);
+
+		
+        var question = scifighter.challenge.getQuestion();
+
+		question = question.split("\n");
+
+		startY = 4 * 64 + 32;
+
+		for(var ermahgerd = 0; ermahgerd < question.length; ermahgerd++)
+		{
+			this.ctx.fillText(question[ermahgerd], 32, startY);
+			startY += 32;
+		}
+        
 		this.ctx.fillStyle = "rgb(154, 154, 178)";
 		this.ctx.fillRect(0, 7 * 64, this.canvas.width, 4 * 64);
+
+		var answers = scifighter.challenge.getMultipleChoice();
+
+		for(var ermahgerd = 0; ermahgerd < answers.length; ermahgerd++)
+		{
+			this.drawAnswer(scifighter, ermahgerd, answers[ermahgerd]);
+		}
+		
+	}
+
+	this.drawAnswer = function(scifighter, index, answer)
+	{
+
+		var answerButtonWidth = (this.canvas.width - (32*3))/2;
+		var answerButtonHeight = ((4*64)-(32*3))/2;
+
+		var x = 32;
+		var y = 7 * 64 + 32;
+
+		if(index >= 2)
+		{
+			y += answerButtonHeight + 32;
+		}
+
+		if(index%2 == 1)
+		{
+			x += answerButtonWidth + 32;
+		}
+
+
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		if(index == scifighter.selectedAnswer)
+		{
+			this.ctx.strokeStyle = "#000000";
+			this.ctx.lineWidth = 10;
+			this.ctx.strokeRect(x, y, answerButtonWidth, answerButtonHeight);
+		}
+		this.ctx.fillRect(x, y, answerButtonWidth, answerButtonHeight);
+
+		this.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "middle";
+
+		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
+
+
 	}
 
 	this.drawLevel = function (scifighter)

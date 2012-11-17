@@ -126,6 +126,8 @@ function SciFighter () {
 
     this.last_action = 100;
 
+    this.selectedAnswer = 0;
+
     this.update = function (modifier, action) {
         if (this.state == 0) this.updateBoard(modifier, action);
         if (this.state == 1) this.updateBattle(modifier, action);
@@ -203,7 +205,38 @@ function SciFighter () {
     }
 
     this.updateBattle = function (modifier, action) {
-        // console.log("pokemon");
+        switch (action) {
+            case SciFighter.actions.LEFT:
+                if(this.selectedAnswer == 1)
+                  this.selectedAnswer = 0;
+                else if(this.selectedAnswer == 3)
+                  this.selectedAnswer = 2;
+                break;
+            case SciFighter.actions.UP:
+                if(this.selectedAnswer == 2)
+                  this.selectedAnswer = 0;
+                else if(this.selectedAnswer == 3)
+                  this.selectedAnswer = 1;
+                break;
+            case SciFighter.actions.RIGHT:
+                if(this.selectedAnswer == 0)
+                  this.selectedAnswer = 1;
+                else if(this.selectedAnswer == 2)
+                  this.selectedAnswer = 3;
+                break;
+            case SciFighter.actions.DOWN:
+                if(this.selectedAnswer == 0)
+                  this.selectedAnswer = 2;
+                else if(this.selectedAnswer == 1)
+                  this.selectedAnswer = 3;
+                break;
+            case SciFighter.actions.ENTER:
+                if(this.challenge.isAnswerCorrect(this.selectedAnswer))
+                {
+                  console.log("Certo? ceeerto...");
+                }
+                break;
+        }
     }
 }
 
