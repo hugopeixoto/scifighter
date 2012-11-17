@@ -86,6 +86,8 @@ var Renderer = function(canvas, ctx)
 		{
 			this.drawBattle(scifighter);
 		}
+
+		this.now = Date.now();
 	};
 
 	this.drawBattle = function(scifighter)
@@ -248,6 +250,7 @@ var Renderer = function(canvas, ctx)
 			else
 			{
 				this.answerReviewDelay -= (Date.now() - this.now);
+
 			}
 		}
 
@@ -274,11 +277,10 @@ var Renderer = function(canvas, ctx)
 		}
 
 		var then = this.now;
-		this.now = Date.now();
 
 		if(this.moving)
 		{
-			var tempOffset = ((this.now - then)/this.movementLength) * 64;
+			var tempOffset = ((Date.now() - then)/this.movementLength) * 64;
 			this.offset += tempOffset;
 
 			if(scifighter.level.player.x > this.previousX)
@@ -301,7 +303,7 @@ var Renderer = function(canvas, ctx)
 
 		
 
-		this.stepRenderTime -= (this.now - then);
+		this.stepRenderTime -= (Date.now() - then);
 		if(this.stepRenderTime <= 0)
 		{
 			this.fourFrameAnimationStep++;
