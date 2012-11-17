@@ -202,19 +202,21 @@ var Renderer = function(canvas, ctx)
 		}
 
 
-		this.ctx.fillStyle = "rgb(255, 255, 0)";
-		if(index == scifighter.selectedQuestion)
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		if(index == scifighter.selectedAnswer)
 		{
-			this.ctx.fillStyle = "rgb(0, 0, 255)";
+			this.ctx.strokeStyle = "#000000";
+			this.ctx.lineWidth = 10;
+			this.ctx.strokeRect(x, y, answerButtonWidth, answerButtonHeight);
 		}
 		this.ctx.fillRect(x, y, answerButtonWidth, answerButtonHeight);
 
 		this.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.ctx.font = "Bold 24px Courier New";
 		this.ctx.textAlign = "left";
-		this.ctx.textBaseline = "top";
+		this.ctx.textBaseline = "middle";
 
-		this.ctx.fillText(answer, x, y);
+		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
 
 
 	}

@@ -14,7 +14,7 @@ function Challenge(type) {
 	}
 
 	this.isAnswerCorrect = function (answer) {
-		return chosenOne.correctAnswer == answer;
+		return this.chosenOne.correctAnswer == answer;
 	}
 
 	this.getQuestion = function() {
