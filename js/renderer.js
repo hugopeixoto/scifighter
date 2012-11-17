@@ -67,6 +67,7 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
     this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
     this.spriteBatch["bitcho"][3] = new Sprite("bitcho/red_large.png");
+    this.spriteBatch["bitcho"][4] = new Sprite("bitcho/green_large.png");
     this.spriteBatch["key"] = new Sprite("key.png");
     this.spriteBatch["button"] = {};
     this.spriteBatch["button"]["pressed"] = new Sprite("button/pressed.png");
@@ -108,6 +109,10 @@ var Renderer = function(canvas, ctx)
 					this.ctx.drawImage(this.spriteBatch["bitcho"][3].image, canvas.width - this.spriteBatch["bitcho"][3].image.width , 0);
 				}
 			break;
+			case 0:
+				if(this.spriteBatch["bitcho"][4].image.ready) {
+					this.ctx.drawImage(this.spriteBatch["bitcho"][4].image, canvas.width - this.spriteBatch["bitcho"][4].image.width , 0);
+				}
 		}
 
 		this.drawHPBar(this.canvas.width - 256 - 16, 208, scifighter.foe.hp, scifighter.foe.max_hp);
