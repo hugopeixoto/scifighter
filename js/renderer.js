@@ -22,6 +22,14 @@ var Renderer = function(canvas, ctx)
 	this.fourFrameAnimationStep = 0;
 	this.now = Date.now();
 
+	this.movementLength = 120;
+	this.moving = false;
+	this.previousX = 16;
+	this.previousY = 31;
+	this.offset = 0;
+
+
+
 	this.spriteBatch = { }
 	this.spriteBatch[Cell.types.LAVA] = []
 	this.spriteBatch[Cell.types.LAVA][0] = new Sprite("lava/lava0.png");
@@ -57,6 +65,11 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
     this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
     this.spriteBatch["bitcho"][3] = new Sprite("bitcho/red_large.png");
+    this.spriteBatch["key"] = new Sprite("key.png");
+    this.spriteBatch["button"] = {};
+    this.spriteBatch["button"]["pressed"] = new Sprite("button/pressed.png");
+    this.spriteBatch["button"]["unpressed"] = new Sprite("button/unpressed.png");
+    this.spriteBatch["door"] = new Sprite("bridge/middle.png");
 
 	this.render = function (scifighter) {
 
@@ -71,27 +84,13 @@ var Renderer = function(canvas, ctx)
 		{
 			this.drawBattle(scifighter);
 		}
-
-		
 	};
 
 	this.drawBattle = function(scifighter)
 	{
-		// Test text
-		/*this.ctx.fillStyle = "rgb(250, 250, 250)";
-		this.ctx.font = "24px Helvetica";
-		this.ctx.textAlign = "left";
-		this.ctx.textBaseline = "top";
-		this.ctx.fillText("battle!", canvas.width/2-100, canvas.width/2-50);*/
-
-		//Players and health
 		this.drawPlayersAndHealth(scifighter);
 
-		//Question
 		this.drawQuestion(scifighter);
-
-		//Answers
-		this.drawAnswers(scifighter);
 	}
 
 	this.drawPlayersAndHealth = function(scifighter)
@@ -146,8 +145,8 @@ var Renderer = function(canvas, ctx)
 		this.ctx.textBaseline = "top";
 		this.ctx.fillText(hp + "/" + max_hp, x + 4, y + 4);
 
-		this.ctx.strokeStyle = "rgb(71, 71, 89)";
-		this.ctx.lineWidth = 1.5;
+		//this.ctx.strokeStyle = "rgb(71, 71, 89)";
+		//this.ctx.lineWidth = 1.5;
 		//this.ctx.strokeText(hp + "/" + max_hp, x + 4, y + healthBarHeight/2);
 	}
 
@@ -155,21 +154,126 @@ var Renderer = function(canvas, ctx)
 	{
 		this.ctx.fillStyle = "rgb(203, 203, 164)";
 		this.ctx.fillRect(0, 4 * 64, this.canvas.width, 3 * 64);
-	}
 
-	this.drawAnswers = function(scifighter)
-	{
+		this.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "top";
+
+		this.ctx.strokeStyle = "rgb(50, 50, 70)";
+		this.ctx.lineWidth = 6;
+		this.ctx.strokeRect(0 + 3, 4 * 64 + 3, this.canvas.width - 6, 3 * 64 - 6);
+
+		
+        var question = scifighter.challenge.getQuestion();
+
+		question = question.split("\n");
+
+		startY = 4 * 64 + 32;
+
+		for(var ermahgerd = 0; ermahgerd < question.length; ermahgerd++)
+		{
+			this.ctx.fillText(question[ermahgerd], 32, startY);
+			startY += 32;
+		}
+        
 		this.ctx.fillStyle = "rgb(154, 154, 178)";
 		this.ctx.fillRect(0, 7 * 64, this.canvas.width, 4 * 64);
+
+		var answers = scifighter.challenge.getMultipleChoice();
+
+		for(var ermahgerd = 0; ermahgerd < answers.length; ermahgerd++)
+		{
+			this.drawAnswer(scifighter, ermahgerd, answers[ermahgerd]);
+		}
+		
+	}
+
+	this.drawAnswer = function(scifighter, index, answer)
+	{
+
+		var answerButtonWidth = (this.canvas.width - (32*3))/2;
+		var answerButtonHeight = ((4*64)-(32*3))/2;
+
+		var x = 32;
+		var y = 7 * 64 + 32;
+
+		if(index >= 2)
+		{
+			y += answerButtonHeight + 32;
+		}
+
+		if(index%2 == 1)
+		{
+			x += answerButtonWidth + 32;
+		}
+
+
+		this.ctx.fillStyle = "rgb(216, 216, 190)";
+		if(index == scifighter.selectedAnswer)
+		{
+			this.ctx.strokeStyle = "#000000";
+			this.ctx.lineWidth = 10;
+			this.ctx.strokeRect(x, y, answerButtonWidth, answerButtonHeight);
+		}
+		this.ctx.fillRect(x, y, answerButtonWidth, answerButtonHeight);
+
+		this.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.ctx.font = "Bold 24px Courier New";
+		this.ctx.textAlign = "left";
+		this.ctx.textBaseline = "middle";
+
+		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
+
+
 	}
 
 	this.drawLevel = function (scifighter)
 	{
-		var drawX = 0;
-		var drawY = 0;
+		var deltaX = 0;
+		var deltaY = 0;
+
+		if(scifighter.level.player.x != this.previousX || scifighter.level.player.y != this.previousY)
+		{
+			this.moving = true;
+		}
+
+		if(this.offset >= 64)
+		{
+			this.offset = 0;
+			this.moving = false;
+			//this.movementLength = 150;
+			this.previousX = scifighter.level.player.x;
+			this.previousY = scifighter.level.player.y;
+		}
 
 		var then = this.now;
 		this.now = Date.now();
+
+		if(this.moving)
+		{
+			var tempOffset = ((this.now - then)/this.movementLength) * 64;
+			this.offset += tempOffset;
+
+			if(scifighter.level.player.x > this.previousX)
+			{
+				deltaX = -this.offset;
+			}
+			else if(scifighter.level.player.x < this.previousX)
+			{
+				deltaX = this.offset;
+			}
+			else if(scifighter.level.player.y > this.previousY)
+			{
+				deltaY = -this.offset;
+			}
+			else if(scifighter.level.player.y < this.previousY)
+			{
+				deltaY = this.offset;
+			}
+		}
+
+		
 
 		this.stepRenderTime -= (this.now - then);
 		if(this.stepRenderTime <= 0)
@@ -183,12 +287,17 @@ var Renderer = function(canvas, ctx)
 		}
 
 
-		for(var i = scifighter.level.player.x - (gridWidth-1)/2; i <= scifighter.level.player.x + (gridWidth-1)/2; i++)
+			for(var j = this.previousY - (gridHeight-1)/2 - 1; j <= this.previousY + (gridHeight-1)/2 + 1; j++)
 		{
-			for(var j = scifighter.level.player.y - (gridHeight-1)/2; j <= scifighter.level.player.y + (gridHeight-1)/2; j++)
+		for(var i = this.previousX - (gridWidth-1)/2 - 1; i <= this.previousX + (gridWidth-1)/2 + 1; i++)
 			{
 				if(i >= 0 && i < scifighter.level.grid.length && j >= 0 && j < scifighter.level.grid[0].length)
 				{
+					var drawX = 64 * (i - (this.previousX - (gridWidth-1)/2)) + deltaX;
+					var drawY = 64 * (j - (this.previousY - (gridHeight-1)/2)) + deltaY;
+
+					
+
 					var sprite = this.spriteFromCell(scifighter.level.grid, i, j);
 
 					if(sprite.image.ready) {
@@ -199,24 +308,39 @@ var Renderer = function(canvas, ctx)
 
 					}
 
-					if(i == scifighter.level.player.x && j == scifighter.level.player.y)
-					{
-						this.drawPlayer(scifighter.level.player, drawX, drawY);
-					}
-
-                    for (var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
+                    for(var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
                         this.drawObject(scifighter.level.grid[j][i].objects[k], drawX, drawY);    
                     }
 
+                    if(this.moving)
+                    {
+                    	if(this.previousX > scifighter.level.player.x)
+                    		if(i == this.previousX && j == this.previousY)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY);
+						if(this.previousX < scifighter.level.player.x)
+                    		if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX - 64, drawY - deltaY);
+
+						if(this.previousY > scifighter.level.player.y)
+                    		if(i == this.previousX && j == this.previousY)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY);
+						if(this.previousY < scifighter.level.player.y)
+                    		if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY - 64);
+                    }
+                    else
+                    {
+                    	if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+                    	{
+                    		this.drawPlayer(scifighter.level.player, drawX, drawY);
+                    	}
+                    }
 				}
 				else
 				{
 					//leave black, out of grid
 				}
-				drawY += 64;
 			}
-			drawX += 64;
-			drawY = 0;
 		}
 	}
 
@@ -230,9 +354,32 @@ var Renderer = function(canvas, ctx)
 
     this.drawObject = function (object, x, y)
     {
-        var sprite = this.spriteBatch["bitcho"][object.type];
-        if (sprite.image.ready) {
-            this.ctx.drawImage(sprite.image, x, y);
+        if (object instanceof Bitcho) {
+            var sprite = this.spriteBatch["bitcho"][object.type];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof Button) {
+            var sprite = this.spriteBatch["button"][object.pressed?"pressed":"unpressed"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof GameKey) {
+            var sprite = this.spriteBatch["key"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof Door) {
+            var sprite = this.spriteBatch["door"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
         }
     }
 
