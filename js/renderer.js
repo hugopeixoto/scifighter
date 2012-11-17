@@ -57,6 +57,10 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["bitcho"][1] = new Sprite("bitcho/purple.png");
     this.spriteBatch["bitcho"][2] = new Sprite("bitcho/red.png");
     this.spriteBatch["bitcho"][3] = new Sprite("bitcho/red_large.png");
+    this.spriteBatch["key"] = new Sprite("key.png");
+    this.spriteBatch["button"] = {};
+    this.spriteBatch["button"]["pressed"] = new Sprite("button/pressed.png");
+    this.spriteBatch["button"]["unpressed"] = new Sprite("button/unpressed.png");
 
 	this.render = function (scifighter) {
 
@@ -71,8 +75,6 @@ var Renderer = function(canvas, ctx)
 		{
 			this.drawBattle(scifighter);
 		}
-
-		
 	};
 
 	this.drawBattle = function(scifighter)
@@ -162,15 +164,13 @@ var Renderer = function(canvas, ctx)
 
 					}
 
-					if(i == scifighter.level.player.x && j == scifighter.level.player.y)
-					{
-						this.drawPlayer(scifighter.level.player, drawX, drawY);
-					}
-
                     for (var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
                         this.drawObject(scifighter.level.grid[j][i].objects[k], drawX, drawY);    
                     }
 
+					if (i == scifighter.level.player.x && j == scifighter.level.player.y) {
+						this.drawPlayer(scifighter.level.player, drawX, drawY);
+					}
 				}
 				else
 				{
@@ -193,9 +193,24 @@ var Renderer = function(canvas, ctx)
 
     this.drawObject = function (object, x, y)
     {
-        var sprite = this.spriteBatch["bitcho"][object.type];
-        if (sprite.image.ready) {
-            this.ctx.drawImage(sprite.image, x, y);
+        if (object instanceof Bitcho) {
+            var sprite = this.spriteBatch["bitcho"][object.type];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof Button) {
+            var sprite = this.spriteBatch["button"][object.pressed?"pressed":"unpressed"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+        if (object instanceof GameKey) {
+            var sprite = this.spriteBatch["key"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
         }
     }
 
