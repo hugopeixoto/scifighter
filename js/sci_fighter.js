@@ -248,8 +248,19 @@ function SciFighter () {
     }
 
     this.advanceRound = function () {
+        if (this.answered == "yes") {
+            this.level.player.hp = Math.max(0, this.level.player.hp - 20);
+        } else {
+            this.foe.hp = Math.max(0, this.foe.hp - 20);
+        }
+
         this.answered = undefined;
-        this.challenge.getNextRun();
+        if (this.foe.hp == 0) {
+            this.state = 0;
+            this.challenge = undefined;
+        } else {
+            this.challenge.getNextRun();
+        }
     }
 }
 
