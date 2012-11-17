@@ -209,6 +209,8 @@ function SciFighter () {
     }
 
     this.updateBattle = function (modifier, action) {
+        if (this.answered != undefined) return;
+
         switch (action) {
             case SciFighter.actions.LEFT:
                 if(this.selectedAnswer == 1)
