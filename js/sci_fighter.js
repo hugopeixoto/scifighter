@@ -25,8 +25,9 @@ function Button (identifier) {
     }
 }
 
-function Door (identifier) {
+function Door (identifier, type) {
     this.identifier = identifier;
+    this.type = type;
 }
 
 function Bitcho (type, max_hp) {
