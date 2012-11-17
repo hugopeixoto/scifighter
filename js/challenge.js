@@ -41,7 +41,7 @@ Challenge.types = {
 var quizQuestions = {};
 quizQuestions[Challenge.types.TRAP] = [];
 quizQuestions[Challenge.types.TRAP].push(new quizQuestion("What is the prime number after 13?",["15","19","21","17"],3));
-quizQuestions[Challenge.types.TRAP].push(new quizQuestion("Which two primes are consecutive?",["17 19","13 19","23 29","27 29"],2));
+quizQuestions[Challenge.types.TRAP].push(new quizQuestion("Which two primes are consecutive?",["15 19","13 19","23 29","27 29"],2));
 quizQuestions[Challenge.types.TRAP].push(new quizQuestion("What is 4 to the power of 0?",["0","1","4","16"],1));
 quizQuestions[Challenge.types.TRAP].push(new quizQuestion("Which is next in the sequence 2,5,11?",["23","25","33","22"],0));
 
@@ -49,10 +49,10 @@ quizQuestions[Challenge.types.MONSTER] = [];
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which polygon has 7 sides?",["Hexagon","Heptagon","Decagon","Pentagon"],1));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("How many sides does a Dodecagon have?",["12","10","7","9"],0));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which is bigger?",["7 + 8","10 - 7","19 - 2","5 + 9"],2));
-quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which is smaller?",["9 * 3","2 * 11","5 * 3","4 * 6"],3));
+quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which is smaller?",["9 * 3","2 * 11","5 * 3","4 * 6"],2));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which one is not equal to the square root of 49?",["2 * 3 + 1","17 - 4 * 2","10 - 6 + 3","4 + 3 * 1"],1));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("What is the prime number after 13?",["15","19","21","17"],3));
-quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which two primes are consecutive?",["17 19","13 19","23 29","27 29"],2));
+quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which two primes are consecutive?",["15 19","13 19","23 29","27 29"],2));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("What is 4 to the power of 0?",["0","1","4","16"],1));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("Which is next in the sequence 2,5,11?",["23","25","33","22"],0));
 quizQuestions[Challenge.types.MONSTER].push(new quizQuestion("(19 + x) / 5 = 6",["14","20","11","6"],2));
