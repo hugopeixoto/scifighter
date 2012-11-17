@@ -84,6 +84,7 @@ var Renderer = function(canvas, ctx)
 		}
 		else if(scifighter.state == 1)
 		{
+
 			this.drawBattle(scifighter);
 		}
 	};
@@ -238,6 +239,9 @@ var Renderer = function(canvas, ctx)
 
 		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
 
+		var then = this.now;
+		this.now = Date.now();
+
 		if(scifighter.answered != undefined)
 		{
 			if(this.answerReviewDelay <= 0)
@@ -247,7 +251,8 @@ var Renderer = function(canvas, ctx)
 			}
 			else
 			{
-				this.answerReviewDelay -= (Date.now() - this.now);
+				console.log(Date.now() - this.now);
+				this.answerReviewDelay -= (this.now - then);
 			}
 		}
 

@@ -210,7 +210,7 @@ function SciFighter () {
 
     this.updateBattle = function (modifier, action) {
         if (this.answered != undefined) return;
-
+        console.log("asd");
         switch (action) {
             case SciFighter.actions.LEFT:
                 if(this.selectedAnswer == 1)
@@ -249,9 +249,9 @@ function SciFighter () {
 
     this.advanceRound = function () {
         if (this.answered == "yes") {
-            this.level.player.hp = Math.max(0, this.level.player.hp - 20);
-        } else {
             this.foe.hp = Math.max(0, this.foe.hp - 20);
+        } else {
+            this.level.player.hp = Math.max(0, this.level.player.hp - 20);
         }
 
         this.answered = undefined;
