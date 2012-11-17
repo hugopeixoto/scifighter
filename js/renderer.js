@@ -155,12 +155,6 @@ var Renderer = function(canvas, ctx)
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
 
-		this.ctx.strokeStyle = "#000";
-		ctx.moveTo(x, y + healthBarHeight);
-  		ctx.lineTo(x + 16, y + healthBarHeight + 16 + 4);
-  		ctx.lineTo(x + 32, y + healthBarHeight + 4);
-  		ctx.stroke();
-
 		
 		this.ctx.fillStyle = "rgb(50, 50, 70)";
 		this.ctx.font = "Bold 24px Courier New";
