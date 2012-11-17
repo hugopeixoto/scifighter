@@ -122,8 +122,6 @@ var Renderer = function(canvas, ctx)
 		var healthBarWidth = 256;
 		var healthBarHeight = 32;
 
-		hp *= 0.1; //TODO: TIRAR ISTO DAQUI!
-
 		this.ctx.strokeStyle = "rgb(0, 0, 0)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x + 3, y + 3, healthBarWidth, healthBarHeight);
@@ -137,6 +135,12 @@ var Renderer = function(canvas, ctx)
 		this.ctx.strokeStyle = "rgb(154, 154, 178)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
+
+		this.ctx.strokeStyle = "#000";
+		ctx.moveTo(x, y + healthBarHeight);
+  		ctx.lineTo(x + 16, y + healthBarHeight + 16 + 4);
+  		ctx.lineTo(x + 32, y + healthBarHeight + 4);
+  		ctx.stroke();
 
 		
 		this.ctx.fillStyle = "rgb(50, 50, 70)";
