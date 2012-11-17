@@ -127,6 +127,7 @@ function SciFighter () {
     this.last_action = 100;
 
     this.selectedAnswer = 0;
+    this.answered = undefined;
 
     this.update = function (modifier, action) {
         if (this.state == 0) this.updateBoard(modifier, action);
@@ -208,6 +209,8 @@ function SciFighter () {
     }
 
     this.updateBattle = function (modifier, action) {
+        if (this.answered != undefined) return;
+
         switch (action) {
             case SciFighter.actions.LEFT:
                 if(this.selectedAnswer == 1)
@@ -236,9 +239,27 @@ function SciFighter () {
             case SciFighter.actions.ENTER:
                 if(this.challenge.isAnswerCorrect(this.selectedAnswer))
                 {
-                  console.log("Certo? ceeerto...");
+                  this.answered = "yes";
+                } else {
+                  this.answered = "no";
                 }
                 break;
+        }
+    }
+
+    this.advanceRound = function () {
+        if (this.answered == "yes") {
+            this.level.player.hp = Math.max(0, this.level.player.hp - 20);
+        } else {
+            this.foe.hp = Math.max(0, this.foe.hp - 20);
+        }
+
+        this.answered = undefined;
+        if (this.foe.hp == 0) {
+            this.state = 0;
+            this.challenge = undefined;
+        } else {
+            this.challenge.getNextRun();
         }
     }
 }

@@ -16,6 +16,8 @@ var Renderer = function(canvas, ctx)
 
 	this.stepRenderTime = 250;
 
+	this.answerReviewDelay = 1000;
+
 	var gridWidth = this.canvas.width / 64;
 	var gridHeight = this.canvas.height / 64;
 
@@ -122,8 +124,6 @@ var Renderer = function(canvas, ctx)
 		var healthBarWidth = 256;
 		var healthBarHeight = 32;
 
-		hp *= 0.1; //TODO: TIRAR ISTO DAQUI!
-
 		this.ctx.strokeStyle = "rgb(0, 0, 0)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x + 3, y + 3, healthBarWidth, healthBarHeight);
@@ -137,6 +137,12 @@ var Renderer = function(canvas, ctx)
 		this.ctx.strokeStyle = "rgb(154, 154, 178)";
 		this.ctx.lineWidth = 4;
 		this.ctx.strokeRect(x, y, healthBarWidth, healthBarHeight);
+
+		this.ctx.strokeStyle = "#000";
+		ctx.moveTo(x, y + healthBarHeight);
+  		ctx.lineTo(x + 16, y + healthBarHeight + 16 + 4);
+  		ctx.lineTo(x + 32, y + healthBarHeight + 4);
+  		ctx.stroke();
 
 		
 		this.ctx.fillStyle = "rgb(50, 50, 70)";
@@ -208,10 +214,17 @@ var Renderer = function(canvas, ctx)
 			x += answerButtonWidth + 32;
 		}
 
-
 		this.ctx.fillStyle = "rgb(216, 216, 190)";
 		if(index == scifighter.selectedAnswer)
 		{
+			if(scifighter.answered == "yes")
+			{
+				this.ctx.fillStyle = "rgb(0, 255, 0)";
+			}
+			else if(scifighter.answered == "no")
+			{
+				this.ctx.fillStyle = "rgb(255, 0, 0)";
+			}
 			this.ctx.strokeStyle = "#000000";
 			this.ctx.lineWidth = 10;
 			this.ctx.strokeRect(x, y, answerButtonWidth, answerButtonHeight);
@@ -224,6 +237,19 @@ var Renderer = function(canvas, ctx)
 		this.ctx.textBaseline = "middle";
 
 		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
+
+		if(scifighter.answered != undefined)
+		{
+			if(this.answerReviewDelay <= 0)
+			{
+				scifighter.advanceRound();
+				this.answerReviewDelay = 1000;
+			}
+			else
+			{
+				this.answerReviewDelay -= (Date.now() - this.now);
+			}
+		}
 
 
 	}
