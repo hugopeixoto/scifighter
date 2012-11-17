@@ -153,6 +153,15 @@ function SciFighter () {
     {
         this.state = 1;
         this.foe = foe;
+
+        // while HP do foe
+        this.challenge = new Challenge(foe.type);
+        if(this.challenge.getNextRun()) {
+            console.log(this.challenge.getQuestion());
+        }
+        else {
+            console.log("No more questions"); 
+        }
     }
 
     this.updateBattle = function (modifier, action) {
