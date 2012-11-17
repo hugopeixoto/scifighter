@@ -212,10 +212,17 @@ var Renderer = function(canvas, ctx)
 			x += answerButtonWidth + 32;
 		}
 
-
 		this.ctx.fillStyle = "rgb(216, 216, 190)";
 		if(index == scifighter.selectedAnswer)
 		{
+			if(scifighter.answered == "yes")
+			{
+				this.ctx.fillStyle = "rgb(0, 255, 0)";
+			}
+			else if(scifighter.answered == "no")
+			{
+				this.ctx.fillStyle = "rgb(255, 0, 0)";
+			}
 			this.ctx.strokeStyle = "#000000";
 			this.ctx.lineWidth = 10;
 			this.ctx.strokeRect(x, y, answerButtonWidth, answerButtonHeight);
