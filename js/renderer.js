@@ -78,6 +78,7 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["door"]["left"] = new Sprite("door/left.png");
     this.spriteBatch["door"]["right"] = new Sprite("door/right.png");
     this.spriteBatch["door"]["useless"] = new Sprite("door/useless.png");
+    this.spriteBatch["codebot"] = new Sprite("codebits.png");
 
 	this.render = function (scifighter) {
 
@@ -404,6 +405,13 @@ var Renderer = function(canvas, ctx)
 
         if (object instanceof Button) {
             var sprite = this.spriteBatch["button"][object.pressed?"pressed":"unpressed"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof Codebot) {
+            var sprite = this.spriteBatch["codebot"];
             if (sprite.image.ready) {
                 this.ctx.drawImage(sprite.image, x, y);
             }

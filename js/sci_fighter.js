@@ -16,6 +16,10 @@ function Player () {
     this.items = [];
 }
 
+function Codebot () {
+  this.easter = "egg";
+}
+
 function Button (identifier) {
     this.pressed = false;
     this.identifier = identifier;

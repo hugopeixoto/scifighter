@@ -146,4 +146,5 @@ function loadLevel(level) {
     level.grid[9][15].objects.push(new Door(42, "left"));
     level.grid[9][16].objects.push(new Door(42, "right"));
     level.grid[9][17].objects.push(new Door(42, "useless"));
+    level.grid[9][19].objects.push(new Codebot());
 }
