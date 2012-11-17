@@ -69,6 +69,7 @@ var Renderer = function(canvas, ctx)
     this.spriteBatch["button"] = {};
     this.spriteBatch["button"]["pressed"] = new Sprite("button/pressed.png");
     this.spriteBatch["button"]["unpressed"] = new Sprite("button/unpressed.png");
+    this.spriteBatch["door"] = new Sprite("bridge/middle.png");
 
 	this.render = function (scifighter) {
 
@@ -366,8 +367,16 @@ var Renderer = function(canvas, ctx)
                 this.ctx.drawImage(sprite.image, x, y);
             }
         }
+
         if (object instanceof GameKey) {
             var sprite = this.spriteBatch["key"];
+            if (sprite.image.ready) {
+                this.ctx.drawImage(sprite.image, x, y);
+            }
+        }
+
+        if (object instanceof Door) {
+            var sprite = this.spriteBatch["door"];
             if (sprite.image.ready) {
                 this.ctx.drawImage(sprite.image, x, y);
             }
