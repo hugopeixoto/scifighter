@@ -127,6 +127,7 @@ function SciFighter () {
     this.last_action = 100;
 
     this.selectedAnswer = 0;
+    this.answered = undefined;
 
     this.update = function (modifier, action) {
         if (this.state == 0) this.updateBoard(modifier, action);
@@ -236,10 +237,17 @@ function SciFighter () {
             case SciFighter.actions.ENTER:
                 if(this.challenge.isAnswerCorrect(this.selectedAnswer))
                 {
-                  console.log("Certo? ceeerto...");
+                  this.answered = "yes";
+                } else {
+                  this.answered = "no";
                 }
                 break;
         }
+    }
+
+    this.advanceRound = function () {
+        this.answered = undefined;
+        this.challenge.getNextRun();
     }
 }
 
