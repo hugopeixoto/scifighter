@@ -75,20 +75,20 @@ function loadLevel(level) {
 		"@@,,@@#...#...............#eeee#",
 		"@@,,@@#...#...............#eeee#",
 		"@@,,@@#...#...............#eeee#",
-		"@@,,@@#...#...............#eeee#",
 		"@@,,@@#...#.........#.....#eeee#",
 		"@@,,@@#...#.........#.....#eeee#",
-		"@@,,@@#...####....#####+########",
-		"@@,,@@#...#ee#....~~~~~+~~~~~~~~",
-		"@,,,,@#...#ee#....~~~~~+~~~~~~~~",
-		"@,,,,@#...#ee#====~~~~~+~~~~~~~~",
+		"@@,,@@#...#.........#.....#eeee#",
+		"@@,,@@#...####....##############",
+		"@@,,@@#...#ee#....~~~~~~~~~~~~~~",
+		"@,,,,@#...#ee#....~~~~~~~~~~~~~~",
+		"@,,,,@#...#ee#====~~~~~~~~~~~~~~",
 		"@,,,,@#...#ee#~~~~~+++~++++~++++",
-		"@@+@@@#...#ee#~~~~~+++~++++~++++",
-		"##+####...#ee#~~~~~+++~+++++++++",
+		"@@@@@@#...#ee#~~~~~+++~++++~++++",
+		"#######...#ee#~~~~~+++++++++++++",
 		"..........#ee#~~~~~+++~++++~++++",
 		"..........#ee#~~~~~+++~~~+~~~~+~",
 		"..........#ee#....~+++~++++~++++",
-		"....#######ee#....++++~++++~++++",
+		"....#######ee#....~+++~++++~++++",
 		"....#eeeeeeee#....~++++++++~++++",
 		"....#eeeeeeee#....~+++~++++~++++",
 		"....#eeeeeeee#....~~~~~~~~~~~~+~",
@@ -133,13 +133,13 @@ function loadLevel(level) {
 		}
 	}
 
-    level.grid[2][2].objects.push(new Bitcho(2, 120));
-    level.grid[6][2].objects.push(new Bitcho(2, 120));
-    level.grid[26][12].objects.push(new Bitcho(2, 120));
-    level.grid[25][26].objects.push(new Bitcho(0, 100));
-    level.grid[15][28].objects.push(new Bitcho(0, 100));
-    level.grid[20][23].objects.push(new Bitcho(0, 100));
-    level.grid[16][18].objects.push(new Bitcho(3, 150));
+    level.grid[2][2].objects.push(new Bitcho(2, 60));
+    level.grid[6][2].objects.push(new Bitcho(2, 60));
+    level.grid[26][12].objects.push(new Bitcho(2, 60));
+    level.grid[25][26].objects.push(new Bitcho(0, 40));
+    level.grid[15][28].objects.push(new Bitcho(0, 40));
+    level.grid[20][23].objects.push(new Bitcho(0, 40));
+    level.grid[4][20].objects.push(new Bitcho(3, 150));
     level.grid[12][2].objects.push(new GameKey(42));
     level.grid[15][20].objects.push(new Button(34));
     level.grid[9][14].objects.push(new Door(42, "useless"));
