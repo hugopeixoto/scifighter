@@ -139,6 +139,7 @@ function loadLevel(level) {
     level.grid[25][26].objects.push(new Bitcho(0, 100));
     level.grid[15][28].objects.push(new Bitcho(0, 100));
     level.grid[20][23].objects.push(new Bitcho(0, 100));
+    level.grid[16][18].objects.push(new Bitcho(3, 150));
     level.grid[12][2].objects.push(new GameKey(42));
     level.grid[15][20].objects.push(new Button(34));
     level.grid[9][14].objects.push(new Door(42));
