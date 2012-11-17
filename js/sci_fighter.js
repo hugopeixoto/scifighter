@@ -185,9 +185,15 @@ function SciFighter () {
                     this.last_action = 150;
                     this.level.playerMovedTo(x, y);
 
-                    var foe = this.level.popFoeAt(x, y);
-                    if (foe) {
-                        this.startBattleWith(foe);
+                    var d = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+                    for (var i = 0; i < 4; i++) {
+                        var vx = x + d[i][0];
+                        var vy = y + d[i][1];
+
+                        var foe = this.level.popFoeAt(vx, vy);
+                        if (foe) {
+                            this.startBattleWith(foe);
+                        }
                     }
 
                     var item = this.level.popPickUpItem(x, y);
