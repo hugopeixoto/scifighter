@@ -2,7 +2,7 @@
 function Cell () {
     this.type = undefined;
     this.walkable = function () {
-        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE, Cell.types.BRIDGE ].indexOf(this.type) >= 0;
+        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE, Cell.types.BRIDGE ].indexOf(this.type) >= 0 && !(this.objects[0] instanceof Door);
     }
     this.objects = [];
 }
@@ -23,6 +23,10 @@ function Button (identifier) {
     this.actUpon = function () {
         this.pressed = !this.pressed;
     }
+}
+
+function Door (identifier) {
+    this.identifier = identifier;
 }
 
 function Bitcho (type, max_hp) {
@@ -102,6 +106,18 @@ function Level (scifighter) {
     this.popPickUpItem = function (x, y) {
         return this.popFirstOf(x, y, function(obj){ return obj instanceof GameKey; });
     }
+
+    this.playerMovedTo = function (x, y) {
+        var bridge_openers = [[10, 15], [10, 16]];
+        if (this.player.items[0] instanceof GameKey) {
+            for (var i = 0; i < bridge_openers.length; i++) {
+                if (bridge_openers[i][0] == y && bridge_openers[i][1] == x) {
+                    this.grid[9][15].objects = [];
+                    this.grid[9][16].objects = [];
+                }
+            }
+        }
+    }
 }
 
 function SciFighter () {
@@ -149,6 +165,7 @@ function SciFighter () {
                     this.level.player.x = x;
                     this.level.player.y = y;
                     this.last_action = 150;
+                    this.level.playerMovedTo(x, y);
 
                     var d = [[-1, 0], [1, 0], [0, -1], [0, 1]];
                     for (var i = 0; i < 4; i++) {
