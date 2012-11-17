@@ -16,8 +16,9 @@ function Player () {
     this.items = [];
 }
 
-function Button () {
+function Button (identifier) {
     this.pressed = false;
+    this.identifier = identifier;
 
     this.actUpon = function () {
         this.pressed = !this.pressed;
@@ -34,10 +35,13 @@ function GameKey (identifier) {
     this.identifier = identifier;
 }
 
-function Level () {
+function Level (scifighter) {
+    this.scifighter = scifighter;
+
     this.init = function (width, height) {
         this.width = width;
         this.height = height;
+        this.scifighter = scifighter;
 
         this.grid = [];
         this.player = new Player();
@@ -69,8 +73,25 @@ function Level () {
             for (var i = 0; i < this.grid[y][x].objects.length; i++) {
                 if (this.grid[y][x].objects[i] instanceof Button) {
                     this.grid[y][x].objects[i].actUpon();
+                    this.onButtonClicked(this.grid[y][x].objects[i]);
                 }
             }
+        }
+    }
+
+    this.onButtonClicked = function (button) {
+        console.log(button);
+        switch (button.identifier) {
+            case 34:
+                var cells = [[13, 14],];
+                if (button.pressed) {
+                    for (var i = 13; i <= 17; i++) for (var j = 14; j <= 17; j++)
+                        this.grid[i][j].type = Cell.types.BRIDGE;
+                } else {
+                    for (var i = 13; i <= 17; i++) for (var j = 14; j <= 17; j++)
+                        this.grid[i][j].type = Cell.types.WATER;
+                }
+                break;
         }
     }
 
