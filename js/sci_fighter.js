@@ -13,12 +13,25 @@ function Player () {
     this.orientation = Player.orientations.UP;
     this.max_hp = 100;
     this.hp = this.max_hp
+    this.items = [];
+}
+
+function Button () {
+    this.pressed = false;
+
+    this.actUpon = function () {
+        this.pressed = !this.pressed;
+    }
 }
 
 function Bitcho (type, max_hp) {
     this.type = type;
     this.max_hp = max_hp;
     this.hp = max_hp;
+}
+
+function GameKey (identifier) {
+    this.identifier = identifier;
 }
 
 function Level () {
@@ -40,6 +53,34 @@ function Level () {
     this.withinBounds = function (x, y) {
         return x >= 0 && y >= 0 && x < this.width && y < this.height;
     }
+
+    this.popFirstOf = function (x, y, test) {
+        if (this.withinBounds(x, y)) {
+            for (var i = 0; i < this.grid[y][x].objects.length; i++) {
+                if (test(this.grid[y][x].objects[i])) {
+                    return this.grid[y][x].objects.splice(i, 1)[0];
+                }
+            }
+        }
+    }
+
+    this.pokemon = function (x, y) {
+        if (this.withinBounds(x, y)) {
+            for (var i = 0; i < this.grid[y][x].objects.length; i++) {
+                if (this.grid[y][x].objects[i] instanceof Button) {
+                    this.grid[y][x].objects[i].actUpon();
+                }
+            }
+        }
+    }
+
+    this.popFoeAt = function (x, y) {
+        return this.popFirstOf(x, y, function(obj){ return obj instanceof Bitcho; });
+    }
+
+    this.popPickUpItem = function (x, y) {
+        return this.popFirstOf(x, y, function(obj){ return obj instanceof GameKey; });
+    }
 }
 
 function SciFighter () {
@@ -58,37 +99,51 @@ function SciFighter () {
         var y = this.level.player.y;
         switch (action) {
             case SciFighter.actions.LEFT:
-              x--;
-              break;
+                x--;
+                break;
             case SciFighter.actions.UP:
-              y--;
-              break;
+                y--;
+                break;
             case SciFighter.actions.RIGHT:
-              x++;
-              break;
+                x++;
+                break;
             case SciFighter.actions.DOWN:
-              y++;
-              break;
+                y++;
+                break;
+            case SciFighter.actions.ENTER:
+                break;
         }
 
-        if (action != undefined) {
+        if (action != undefined && action != SciFighter.actions.ENTER) {
             this.level.player.orientation = action;
         }
 
         this.last_action -= modifier * 1000;
-        if (this.last_action < 0 && this.level.withinBounds(x, y) && this.level.grid[y][x].walkable()) {
-            this.level.player.x = x;
-            this.level.player.y = y;
-            this.last_action = 150;
+        if (this.last_action < 0) {
+            if (action == SciFighter.actions.ENTER) {
+                this.last_action = 150;
+                this.level.pokemon(x, y);
+            } else {
+                if (this.level.withinBounds(x, y) && this.level.grid[y][x].walkable()) {
+                    this.level.player.x = x;
+                    this.level.player.y = y;
+                    this.last_action = 150;
 
-            var d = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-            for (var i = 0; i < 4; i++) {
-                var vx = x + d[i][0];
-                var vy = y + d[i][1];
+                    var d = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+                    for (var i = 0; i < 4; i++) {
+                        var vx = x + d[i][0];
+                        var vy = y + d[i][1];
 
-                if (this.level.withinBounds(vx, vy) && this.level.grid[vy][vx].objects.length > 0) {
-                    var edgar_alan_foe = this.level.grid[vy][vx].objects.pop();
-                    this.startBattleWith(edgar_alan_foe);
+                        var foe = this.level.popFoeAt(vx, vy);
+                        if (foe) {
+                            this.startBattleWith(foe);
+                        }
+                    }
+
+                    var item = this.level.popPickUpItem(x, y);
+                    if (item) {
+                        this.level.player.items.push(item);
+                    }
                 }
             }
         }
@@ -122,6 +177,7 @@ Player.orientations = {
 }
 
 SciFighter.actions = Player.orientations;
+SciFighter.actions.ENTER = 5;
 
 Cell.types = {
     LAVA: 1,
