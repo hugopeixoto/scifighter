@@ -22,6 +22,12 @@ var Renderer = function(canvas, ctx)
 	this.fourFrameAnimationStep = 0;
 	this.now = Date.now();
 
+	this.movementLength = 120;
+	this.moving = false;
+	this.previousX = 16;
+	this.previousY = 31;
+	this.offset = 0;
+
 
 
 	this.spriteBatch = { }
@@ -223,11 +229,50 @@ var Renderer = function(canvas, ctx)
 
 	this.drawLevel = function (scifighter)
 	{
-		var drawX = 0;
-		var drawY = 0;
+		var deltaX = 0;
+		var deltaY = 0;
+
+		if(scifighter.level.player.x != this.previousX || scifighter.level.player.y != this.previousY)
+		{
+			this.moving = true;
+		}
+
+		if(this.offset >= 64)
+		{
+			this.offset = 0;
+			this.moving = false;
+			//this.movementLength = 150;
+			this.previousX = scifighter.level.player.x;
+			this.previousY = scifighter.level.player.y;
+		}
 
 		var then = this.now;
 		this.now = Date.now();
+
+		if(this.moving)
+		{
+			var tempOffset = ((this.now - then)/this.movementLength) * 64;
+			this.offset += tempOffset;
+
+			if(scifighter.level.player.x > this.previousX)
+			{
+				deltaX = -this.offset;
+			}
+			else if(scifighter.level.player.x < this.previousX)
+			{
+				deltaX = this.offset;
+			}
+			else if(scifighter.level.player.y > this.previousY)
+			{
+				deltaY = -this.offset;
+			}
+			else if(scifighter.level.player.y < this.previousY)
+			{
+				deltaY = this.offset;
+			}
+		}
+
+		
 
 		this.stepRenderTime -= (this.now - then);
 		if(this.stepRenderTime <= 0)
@@ -241,12 +286,17 @@ var Renderer = function(canvas, ctx)
 		}
 
 
-		for(var i = scifighter.level.player.x - (gridWidth-1)/2; i <= scifighter.level.player.x + (gridWidth-1)/2; i++)
+			for(var j = this.previousY - (gridHeight-1)/2 - 1; j <= this.previousY + (gridHeight-1)/2 + 1; j++)
 		{
-			for(var j = scifighter.level.player.y - (gridHeight-1)/2; j <= scifighter.level.player.y + (gridHeight-1)/2; j++)
+		for(var i = this.previousX - (gridWidth-1)/2 - 1; i <= this.previousX + (gridWidth-1)/2 + 1; i++)
 			{
 				if(i >= 0 && i < scifighter.level.grid.length && j >= 0 && j < scifighter.level.grid[0].length)
 				{
+					var drawX = 64 * (i - (this.previousX - (gridWidth-1)/2)) + deltaX;
+					var drawY = 64 * (j - (this.previousY - (gridHeight-1)/2)) + deltaY;
+
+					
+
 					var sprite = this.spriteFromCell(scifighter.level.grid, i, j);
 
 					if(sprite.image.ready) {
@@ -257,22 +307,39 @@ var Renderer = function(canvas, ctx)
 
 					}
 
-                    for (var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
+                    for(var k = 0; k < scifighter.level.grid[j][i].objects.length; k++) {
                         this.drawObject(scifighter.level.grid[j][i].objects[k], drawX, drawY);    
                     }
 
-					if (i == scifighter.level.player.x && j == scifighter.level.player.y) {
-						this.drawPlayer(scifighter.level.player, drawX, drawY);
-					}
+                    if(this.moving)
+                    {
+                    	if(this.previousX > scifighter.level.player.x)
+                    		if(i == this.previousX && j == this.previousY)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY);
+						if(this.previousX < scifighter.level.player.x)
+                    		if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX - 64, drawY - deltaY);
+
+						if(this.previousY > scifighter.level.player.y)
+                    		if(i == this.previousX && j == this.previousY)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY);
+						if(this.previousY < scifighter.level.player.y)
+                    		if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+								this.drawPlayer(scifighter.level.player, drawX - deltaX, drawY - deltaY - 64);
+                    }
+                    else
+                    {
+                    	if(i == scifighter.level.player.x && j == scifighter.level.player.y)
+                    	{
+                    		this.drawPlayer(scifighter.level.player, drawX, drawY);
+                    	}
+                    }
 				}
 				else
 				{
 					//leave black, out of grid
 				}
-				drawY += 64;
 			}
-			drawX += 64;
-			drawY = 0;
 		}
 	}
 
