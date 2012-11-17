@@ -251,7 +251,7 @@ var Renderer = function(canvas, ctx)
 			}
 			else
 			{
-				console.log(Date.now() - this.now);
+				//console.log(Date.now() - this.now);
 				this.answerReviewDelay -= (this.now - then);
 			}
 		}

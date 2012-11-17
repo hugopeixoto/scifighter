@@ -2,7 +2,7 @@
 function Cell () {
     this.type = undefined;
     this.walkable = function () {
-        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE, Cell.types.BRIDGE ].indexOf(this.type) >= 0 && !(this.objects[0] instanceof Door);
+        return [ Cell.types.GROUND_LAVA, Cell.types.GROUND_SWAMP, Cell.types.GROUND_STONE, Cell.types.BRIDGE ].indexOf(this.type) >= 0 && !(this.objects[0] instanceof Door) && !(this.objects[0] instanceof Button);
     }
     this.objects = [];
 }
@@ -84,7 +84,6 @@ function Level (scifighter) {
     }
 
     this.onButtonClicked = function (button) {
-        console.log(button);
         switch (button.identifier) {
             case 34:
                 var cells = [[13, 14],];
@@ -162,7 +161,20 @@ function SciFighter () {
         if (this.last_action < 0) {
             if (action == SciFighter.actions.ENTER) {
                 this.last_action = 150;
-                this.level.pokemon(x, y);
+                switch (this.level.player.orientation) {
+                    case SciFighter.actions.LEFT:
+                        this.level.pokemon(x-1, y);
+                        break;
+                    case SciFighter.actions.UP:
+                        this.level.pokemon(x, y-1);
+                        break;
+                    case SciFighter.actions.RIGHT:
+                        this.level.pokemon(x+1, y);
+                        break;
+                    case SciFighter.actions.DOWN:
+                        this.level.pokemon(x, y+1);
+                        break;
+                }
             } else {
                 if (action != undefined && action != SciFighter.actions.ENTER) {
                     this.level.player.orientation = action;
@@ -201,7 +213,7 @@ function SciFighter () {
         // while HP do foe
         this.challenge = new Challenge(foe.type);
         if(this.challenge.getNextRun()) {
-            console.log(this.challenge.getQuestion());
+            this.challenge.getQuestion();
         }
         else {
             console.log("No more questions"); 
@@ -210,7 +222,7 @@ function SciFighter () {
 
     this.updateBattle = function (modifier, action) {
         if (this.answered != undefined) return;
-        console.log("asd");
+
         switch (action) {
             case SciFighter.actions.LEFT:
                 if(this.selectedAnswer == 1)
