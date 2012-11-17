@@ -16,6 +16,8 @@ var Renderer = function(canvas, ctx)
 
 	this.stepRenderTime = 250;
 
+	this.answerReviewDelay = 1000;
+
 	var gridWidth = this.canvas.width / 64;
 	var gridHeight = this.canvas.height / 64;
 
@@ -235,6 +237,19 @@ var Renderer = function(canvas, ctx)
 		this.ctx.textBaseline = "middle";
 
 		this.ctx.fillText(answer, x + 16, y + answerButtonHeight/2);
+
+		if(scifighter.answered != undefined)
+		{
+			if(this.answerReviewDelay <= 0)
+			{
+				scifighter.advanceRound();
+				this.answerReviewDelay = 1000;
+			}
+			else
+			{
+				this.answerReviewDelay -= (Date.now() - this.now);
+			}
+		}
 
 
 	}
