@@ -154,7 +154,7 @@ function SciFighter () {
         }
 
         if (action != undefined && action != SciFighter.actions.ENTER) {
-            this.level.player.orientation = action;
+            //this.level.player.orientation = action;
         }
 
         this.last_action -= modifier * 1000;
@@ -163,6 +163,9 @@ function SciFighter () {
                 this.last_action = 150;
                 this.level.pokemon(x, y);
             } else {
+                if (action != undefined && action != SciFighter.actions.ENTER) {
+                    this.level.player.orientation = action;
+                }
                 if (this.level.withinBounds(x, y) && this.level.grid[y][x].walkable()) {
                     this.level.player.x = x;
                     this.level.player.y = y;
